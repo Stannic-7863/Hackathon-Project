@@ -1,0 +1,53 @@
+{
+  "university": "University of Layyah",
+  "programs": [
+    {
+      "name": "BS Computer Science",
+      "duration": "4 years (8 semesters)",
+      "eligibility": "Minimum 50% marks in HSSC (Pre-Engineering or ICS) with Mathematics as a compulsory subject, or an equivalent qualification.",
+      "fee": "PKR 45,000 per semester",
+      "department": "Department of Computer Science",
+      "admissionDeadline": "August 15, 2026"
+    },
+    {
+      "name": "BS Information Technology",
+      "duration": "4 years (8 semesters)",
+      "eligibility": "Minimum 45% marks in HSSC (Pre-Engineering, ICS, or ICOM background accepted).",
+      "fee": "PKR 40,000 per semester",
+      "department": "Department of Computer Science",
+      "admissionDeadline": "August 15, 2026"
+    },
+    {
+      "name": "BS Mathematics",
+      "duration": "4 years (8 semesters)",
+      "eligibility": "Minimum 45% marks in HSSC with Mathematics as a subject.",
+      "fee": "PKR 30,000 per semester",
+      "department": "Department of Mathematics",
+      "admissionDeadline": "August 15, 2026"
+    }
+  ],
+  "departments": [
+    {
+      "name": "Department of Computer Science",
+      "location": "Block C, 2nd Floor, Main Academic Building",
+      "extension": "142"
+    },
+    {
+      "name": "Department of Mathematics",
+      "location": "Block B, Ground Floor, Main Academic Building",
+      "extension": "118"
+    }
+  ],
+  "policies": {
+    "attendance": "Students must maintain at least 75% attendance in a course to be eligible for its final exam.",
+    "grading": "Mid-term exams carry 30% of the final grade, the final exam carries 50%, and the remaining 20% comes from assignments, quizzes, and class participation."
+  },
+  "events": [
+    { "name": "AWS Student Builder Club Orientation", "date": "June 18, 2026" },
+    { "name": "Inter-Department Sports Gala", "date": "June 25, 2026" },
+    { "name": "Tech Talk: Intro to Cloud Computing", "date": "July 2, 2026" }
+  ],
+  "contact": {
+    "admissionsOffice": "For anything not covered here, direct students to the Admissions Office."
+  }
+}
