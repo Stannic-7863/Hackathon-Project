@@ -64,9 +64,39 @@ const markdownComponents = {
     <a href={href} target="_blank" rel="noopener noreferrer" className="font-medium text-amber-600 hover:text-amber-700">
       {children}
     </a>
-  ),
-  code: ({ children }) => <code className="rounded-md bg-accent px-1.5 py-0.5 text-[0.85em] font-medium text-foreground">{children}</code>,
-  h1: ({ children }) => <h1 className="mb-2 mt-4 font-serif text-lg font-semibold text-foreground">{children}</h1>,
+	),
+  pre({ children }) {
+	  return (
+	    <pre
+	      className={`overflow-x-auto rounded-xl bg-muted p-4 text-sm font-mono ${BORDERED}`}
+	    >
+	      {children}
+	    </pre>
+	  );
+	},
+  code({ inline, className, children, ...props }) {
+	  if (inline) {
+	    return (
+	      <code
+	        className="rounded bg-muted px-1 py-0.5 font-mono text-sm"
+	        {...props}
+	      >
+	        {children}
+	      </code>
+	    );
+	  }
+
+	  return (
+	    <code
+	      className={className}
+	      {...props}
+	    >
+	      {children}
+	    </code>
+	  );
+	},
+
+	h1: ({ children }) => <h1 className="mb-2 mt-4 font-serif text-lg font-semibold text-foreground">{children}</h1>,
   h2: ({ children }) => <h2 className="mb-2 mt-4 font-serif text-base font-semibold text-foreground">{children}</h2>,
   h3: ({ children }) => <h3 className="mb-2 mt-3 font-semibold text-foreground">{children}</h3>,
   table: ({ children }) => (
@@ -312,8 +342,8 @@ export default function UoLAssistant() {
           {sidebarOpen ? (
             <>
               <GraduationCap className="h-6 w-6 shrink-0 text-amber-500" />
-              <span className="ml-3 truncate font-serif text-sm font-semibold tracking-wide text-foreground">
-                UoL Assistant
+              <span className="ml-3 truncate font-san text-sm font-semibold tracking-wide text-foreground">
+                UL Assistant
               </span>
               <button
                 onClick={() => setSidebarOpen(false)}
@@ -491,10 +521,10 @@ export default function UoLAssistant() {
                         <span className="font-medium">{m.text}</span>
                       </div>
                     ) : (
-                      <div className="prose dark:prose-invert max-w-none prose-p:leading-relaxed prose-pre:bg-primary prose-pre:text-primary-foreground">
-                        <ReactMarkdown remarkPlugins={[remarkGfm]} components={markdownComponents}>
-                          {m.text}
-                        </ReactMarkdown>
+                      <div className="prose dark:prose-invert max-w-none prose-p:leading-relaxed prose-pre:bg-transparent prose-pre:p-0 prose-code:before:content-none prose-code:after:content-none">
+                      	<ReactMarkdown remarkPlugins={[remarkGfm]} components={markdownComponents}>
+                      	{m.text}
+                      	</ReactMarkdown>
                       </div>
                     )
                   ) : (
