@@ -1,8 +1,9 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { useTheme } from "next-themes";
-import { Moon, Sun } from "lucide-react";
+import { Moon, Sun, Check, Star } from "lucide-react";
 import {
   GraduationCap,
   Send,
@@ -37,6 +38,20 @@ const SUGGESTIONS = [
   { icon: MapPin, text: "Where is the Computer Science department?" },
   { icon: Calendar, text: "What events are happening this month?" },
 ];
+
+// Adding a fourth theme later: define it here, give it a CSS class block
+// in globals.css with the same variable names as :root/.dark/.uol, and add
+// its name to the `themes` array passed to <ThemeProvider>.
+const THEMES = [
+  { value: "sun", label: "Sun", icon: Sun },
+  { value: "moon", label: "Moon", icon: Moon },
+  { value: "star", label: "Star", icon: Star },
+];
+
+// Shared class fragment for "card-like" surfaces: a border that's invisible
+// (0px) in light/dark and a visible rule in .uol, per --border-width in
+// globals.css. Append this alongside background/spacing/rounding classes.
+const BORDERED = "border-[length:var(--border-width)] border-border";
 
 const markdownComponents = {
   p: ({ children }) => <p className="mb-2 last:mb-0">{children}</p>,
@@ -93,6 +108,52 @@ function loadPersisted() {
   return { conversations: [createConversation("default")], activeId: "default" };
 }
 
+// Reusable dropdown: trigger button + menu rendered into a portal so it
+// isn't clipped by an `overflow-hidden` ancestor (the sidebar, mid-collapse-
+// animation, is exactly that). Position is computed from the trigger's
+// bounding box at open time.
+//   placement: "bottom" opens below the trigger, "top" opens above it.
+//   align: "left"/"right" anchors the menu's left/right edge to the trigger's.
+//   children: render-prop receiving `close` so menu items can dismiss themselves.
+function Dropdown({ trigger, triggerClassName, placement = "bottom", align = "right", children }) {
+  const [open, setOpen] = useState(false);
+  const [coords, setCoords] = useState(null);
+  const btnRef = useRef(null);
+
+  function toggle() {
+    if (!open && btnRef.current) {
+      const rect = btnRef.current.getBoundingClientRect();
+      setCoords({
+        ...(placement === "top" ? { bottom: window.innerHeight - rect.top + 8 } : { top: rect.bottom + 8 }),
+        ...(align === "left" ? { left: rect.left } : { right: window.innerWidth - rect.right }),
+      });
+    }
+    setOpen((v) => !v);
+  }
+
+  return (
+    <div className="relative shrink-0">
+      <button ref={btnRef} onClick={toggle} className={triggerClassName} aria-haspopup="menu" aria-expanded={open}>
+        {trigger}
+      </button>
+      {open &&
+        coords &&
+        createPortal(
+          <>
+            <div className="fixed inset-0 z-30" onClick={() => setOpen(false)} />
+            <div
+              style={coords}
+              className={`fixed z-40 w-44 overflow-hidden rounded-xl bg-background py-1.5 shadow-lg ${BORDERED}`}
+            >
+              {children(() => setOpen(false))}
+            </div>
+          </>,
+          document.body
+        )}
+    </div>
+  );
+}
+
 export default function UoLAssistant() {
   const [conversations, setConversations] = useState(() => loadPersisted().conversations);
   const [activeId, setActiveId] = useState(() => loadPersisted().activeId);
@@ -100,9 +161,9 @@ export default function UoLAssistant() {
   const [loading, setLoading] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [confirmClear, setConfirmClear] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
   const [isRenaming, setIsRenaming] = useState(false);
   const [renameValue, setRenameValue] = useState("");
+  const [mounted, setMounted] = useState(false);
   const { theme, setTheme } = useTheme();
 
   const scrollRef = useRef(null);
@@ -125,6 +186,11 @@ export default function UoLAssistant() {
     };
   }, []);
 
+  function switchTo(id) {
+    setActiveId(id);
+    setIsRenaming(false);
+  }
+
   function handleClearAll() {
     if (!confirmClear) {
       setConfirmClear(true);
@@ -135,14 +201,13 @@ export default function UoLAssistant() {
     setConfirmClear(false);
     const fresh = createConversation(crypto.randomUUID());
     setConversations([fresh]);
-    setActiveId(fresh.id);
-    setSidebarOpen(false);
+    switchTo(fresh.id);
   }
 
   function newChat() {
     const id = crypto.randomUUID();
     setConversations((prev) => [createConversation(id), ...prev]);
-    setActiveId(id);
+    switchTo(id);
   }
 
   function deleteConversation(id, e) {
@@ -151,17 +216,16 @@ export default function UoLAssistant() {
     if (filtered.length === 0) {
       const fresh = createConversation(crypto.randomUUID());
       setConversations([fresh]);
-      setActiveId(fresh.id);
+      switchTo(fresh.id);
       return;
     }
     setConversations(filtered);
-    if (id === activeId) setActiveId(filtered[0].id);
+    if (id === activeId) switchTo(filtered[0].id);
   }
 
   function startRename() {
     setRenameValue(active.title);
     setIsRenaming(true);
-    setMenuOpen(false);
   }
 
   function commitRename() {
@@ -240,7 +304,7 @@ export default function UoLAssistant() {
       )}
 
       <aside
-        className={`fixed inset-y-0 left-0 z-30 flex flex-col overflow-hidden bg-card transition-all duration-300 md:relative md:z-0 ${
+        className={`fixed inset-y-0 left-0 z-30 flex flex-col overflow-hidden bg-card border-r-[length:var(--border-width)] border-border transition-all duration-300 md:relative md:z-0 ${
           sidebarOpen ? "translate-x-0 w-72" : "-translate-x-full md:translate-x-0 w-16"
         }`}
       >
@@ -271,7 +335,7 @@ export default function UoLAssistant() {
         <div className={`mb-2 ${sidebarOpen ? "px-4" : "flex justify-center px-2"}`}>
           <button
             onClick={newChat}
-            className={`flex items-center rounded-xl bg-accent text-sm font-medium text-foreground transition-colors hover:bg-accent ${
+            className={`flex items-center rounded-xl bg-accent text-sm font-medium text-foreground transition-colors hover:bg-accent ${BORDERED} ${
               sidebarOpen ? "w-full gap-3 px-4 py-3" : "h-12 w-12 justify-center"
             }`}
           >
@@ -283,17 +347,17 @@ export default function UoLAssistant() {
         {sidebarOpen && (
           <>
             <div className="px-5 pb-2 pt-4">
-              <h2 className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
-                Recent
-              </h2>
+              <h2 className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">Recent</h2>
             </div>
             <div className="flex-1 space-y-0.5 overflow-y-auto px-3 py-1">
               {conversations.map((c) => (
                 <button
                   key={c.id}
-                  onClick={() => setActiveId(c.id)}
+                  onClick={() => switchTo(c.id)}
                   className={`group flex w-full items-center gap-3 rounded-xl px-3 py-2 text-left text-sm transition-colors ${
-                    c.id === activeId ? "bg-accent text-foreground" : "text-muted-foreground hover:bg-accent"
+                    c.id === activeId
+                      ? `bg-accent text-foreground ${BORDERED}`
+                      : "border-[length:var(--border-width)] border-transparent text-muted-foreground hover:bg-accent"
                   }`}
                 >
                   <MessageSquare className={`h-4 w-4 shrink-0 ${c.id === activeId ? "text-foreground" : "text-muted-foreground"}`} />
@@ -316,7 +380,7 @@ export default function UoLAssistant() {
           {sidebarOpen && (
             <button
               onClick={handleClearAll}
-              className={`flex flex-1 items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-medium transition-colors ${
+              className={`flex flex-1 items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-medium transition-colors ${BORDERED} ${
                 confirmClear
                   ? "bg-destructive text-destructive-foreground"
                   : "bg-muted text-muted-foreground hover:bg-accent hover:text-accent-foreground"
@@ -326,14 +390,38 @@ export default function UoLAssistant() {
               {confirmClear ? "Confirm?" : "Clear chats"}
             </button>
           )}
-          <button className="flex shrink-0 items-center justify-center rounded-xl bg-muted p-2.5 text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground">
-            <Settings className="h-5 w-5" />
-          </button>
+
+          <Dropdown
+            placement="top"
+            align="left"
+            triggerClassName={`flex shrink-0 items-center justify-center rounded-xl bg-muted p-2.5 text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground ${BORDERED}`}
+            trigger={<Settings className="h-5 w-5" />}
+          >
+            {(close) => (
+              <div className="py-1">
+                <p className="px-4 py-1.5 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">Theme</p>
+                {THEMES.map(({ value, label, icon: Icon }) => (
+                  <button
+                    key={value}
+                    onClick={() => {
+                      setTheme(value);
+                      close();
+                    }}
+                    className="flex w-full items-center gap-3 px-4 py-2 text-left text-sm font-medium text-foreground hover:bg-accent"
+                  >
+                    <Icon className="h-4 w-4" />
+                    {label}
+                    {mounted && theme === value && <Check className="ml-auto h-4 w-4" />}
+                  </button>
+                ))}
+              </div>
+            )}
+          </Dropdown>
         </div>
       </aside>
 
       <main className="flex flex-1 flex-col overflow-hidden bg-background">
-        <header className="flex h-16 shrink-0 items-center gap-3 px-6 py-4">
+        <header className={`flex h-16 shrink-0 items-center gap-3 px-6 py-4 border-b-[length:var(--border-width)] border-border`}>
           {isRenaming ? (
             <input
               autoFocus
@@ -344,57 +432,43 @@ export default function UoLAssistant() {
                 if (e.key === "Enter") commitRename();
                 if (e.key === "Escape") setIsRenaming(false);
               }}
-              className="flex-1 rounded-lg bg-muted px-3 py-1.5 text-sm font-medium text-foreground outline-none"
+              className={`flex-1 rounded-lg bg-muted px-3 py-1.5 text-sm font-medium text-foreground outline-none ${BORDERED}`}
             />
           ) : (
             <h1 className="flex-1 truncate text-sm font-semibold text-foreground">{active.title}</h1>
           )}
 
-          <button
-            onClick={() =>
-              setTheme(theme === "dark" ? "light" : "dark")
-            }
-            className="rounded-lg p-1.5 text-muted-foreground transition-colors hover:bg-accent hover:text-muted-foreground"
+          <Dropdown
+            placement="bottom"
+            align="right"
+            triggerClassName="rounded-lg p-1.5 text-muted-foreground transition-colors hover:bg-accent hover:text-muted-foreground"
+            trigger={<MoreVertical className="h-5 w-5" />}
           >
-            {theme === "dark"
-              ? <Sun className="h-5 w-5" />
-              : <Moon className="h-5 w-5" />
-            }
-          </button>
-
-          <div className="relative shrink-0">
-            <button
-              onClick={() => setMenuOpen((v) => !v)}
-              className="rounded-lg p-1.5 text-muted-foreground transition-colors hover:bg-accent hover:text-muted-foreground"
-            >
-              <MoreVertical className="h-5 w-5" />
-            </button>
-
-            {menuOpen && (
+            {(close) => (
               <>
-                <div className="fixed inset-0 z-30" onClick={() => setMenuOpen(false)} />
-                <div className="absolute right-0 top-full z-40 mt-2 w-44 overflow-hidden rounded-xl bg-background border border-border py-1.5 shadow-lg">
-                  <button
-                    onClick={startRename}
-                    className="flex w-full items-center gap-3 px-4 py-2 text-left text-sm font-medium text-foreground hover:bg-accent"
-                  >
-                    <Pencil className="h-4 w-4" />
-                    Rename
-                  </button>
-                  <button
-                    onClick={() => {
-                      setMenuOpen(false);
-                      deleteConversation(activeId);
-                    }}
-                    className="flex w-full items-center gap-3 px-4 py-2 text-left text-sm font-medium text-destructive hover:bg-destructive hover:text-accent"
-                  >
-                    <Trash2 className="h-4 w-4" />
-                    Delete
-                  </button>
-                </div>
+                <button
+                  onClick={() => {
+                    startRename();
+                    close();
+                  }}
+                  className="flex w-full items-center gap-3 px-4 py-2 text-left text-sm font-medium text-foreground hover:bg-accent"
+                >
+                  <Pencil className="h-4 w-4" />
+                  Rename
+                </button>
+                <button
+                  onClick={() => {
+                    close();
+                    deleteConversation(activeId);
+                  }}
+                  className="flex w-full items-center gap-3 px-4 py-2 text-left text-sm font-medium text-destructive hover:bg-destructive hover:text-accent"
+                >
+                  <Trash2 className="h-4 w-4" />
+                  Delete
+                </button>
               </>
             )}
-          </div>
+          </Dropdown>
         </header>
 
         <div ref={scrollRef} className="flex-1 overflow-y-auto px-4 py-6 sm:px-8">
@@ -402,12 +476,12 @@ export default function UoLAssistant() {
             {active.messages.map((m, i) => (
               <div key={i} className={`flex ${m.role === "user" ? "justify-end" : "justify-start"}`}>
                 <div
-                  className={`max-w-[85%] rounded-xl px-3 py-1.5 text-[15px] leading-relaxed ${
+                  className={`max-w-[85%] rounded-xl px-3 py-1.5 text-[15px] leading-relaxed ${BORDERED} ${
                     m.role === "user"
                       ? "bg-primary text-primary-foreground"
                       : m.isError
                       ? "bg-destructive text-destructive-foreground"
-                      : "bg-card text-card-foreground"
+                      : "text-card-foreground"
                   }`}
                 >
                   {m.role === "assistant" ? (
@@ -432,7 +506,7 @@ export default function UoLAssistant() {
 
             {loading && (
               <div className="flex justify-start">
-                <div className="ml-2 flex items-center gap-1.5 rounded-xl bg-card px-4 py-3">
+                <div className={`ml-2 flex items-center gap-1.5 rounded-xl bg-card px-4 py-3 ${BORDERED}`}>
                   <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-muted-foreground" />
                   <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-muted-foreground" />
                   <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-muted-foreground" />
@@ -446,7 +520,7 @@ export default function UoLAssistant() {
                   <button
                     key={text}
                     onClick={() => send(text)}
-                    className="flex items-center gap-2.5 rounded-xl bg-card px-3 py-2.5 text-left text-sm font-medium text-foreground transition-colors hover:bg-accent"
+                    className={`flex items-center gap-2.5 rounded-xl bg-card px-3 py-2.5 text-left text-sm font-medium text-foreground transition-colors hover:bg-accent ${BORDERED}`}
                   >
                     <Icon className="h-4 w-4 shrink-0 text-amber-500" />
                     {text}
@@ -459,7 +533,7 @@ export default function UoLAssistant() {
 
         <div className="bg-background pb-6 pt-2 px-4 sm:px-8">
           <div className="mx-auto max-w-3xl">
-            <div className="flex items-end rounded-[20px] bg-muted px-1.5 py-1.5">
+            <div className={`flex items-end rounded-2xl bg-muted px-1.5 py-1.5 ${BORDERED}`}>
               <textarea
                 ref={inputRef}
                 value={input}
@@ -482,7 +556,7 @@ export default function UoLAssistant() {
               <button
                 onClick={() => send(input)}
                 disabled={loading || !input.trim()}
-                className="mb-0.5 mr-0.5 shrink-0 rounded-full p-1.5 text-foreground transition-colors hover:text-background hover:bg-primary disabled:cursor-not-allowed disabled:bg-accent disabled:text-muted-foreground"
+                className="mb-0.5 mr-0.5 shrink-0 rounded-full p-1.5 bg-primary text-primary-foreground transition-colors hover:text-background hover:bg-primary disabled:cursor-not-allowed disabled:bg-muted disabled:text-muted-foreground"
               >
                 <Send className="h-4 w-4" />
               </button>

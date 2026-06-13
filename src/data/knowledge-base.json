@@ -1,53 +1,398 @@
 {
-  "university": "University of Layyah",
-  "programs": [
-    {
-      "name": "BS Computer Science",
-      "duration": "4 years (8 semesters)",
-      "eligibility": "Minimum 50% marks in HSSC (Pre-Engineering or ICS) with Mathematics as a compulsory subject, or an equivalent qualification.",
-      "fee": "PKR 45,000 per semester",
-      "department": "Department of Computer Science",
-      "admissionDeadline": "August 15, 2026"
-    },
-    {
-      "name": "BS Information Technology",
-      "duration": "4 years (8 semesters)",
-      "eligibility": "Minimum 45% marks in HSSC (Pre-Engineering, ICS, or ICOM background accepted).",
-      "fee": "PKR 40,000 per semester",
-      "department": "Department of Computer Science",
-      "admissionDeadline": "August 15, 2026"
-    },
-    {
-      "name": "BS Mathematics",
-      "duration": "4 years (8 semesters)",
-      "eligibility": "Minimum 45% marks in HSSC with Mathematics as a subject.",
-      "fee": "PKR 30,000 per semester",
-      "department": "Department of Mathematics",
-      "admissionDeadline": "August 15, 2026"
+  "university": {
+    "name": "University of Layyah",
+    "acronym": "UL",
+    "website": "https://ul.edu.pk",
+    "developer": "SoftPitch",
+    "copyright": "© Copyright 2026 UNIVERSITY OF LAYYAH",
+    "tagline": "A Place of Innovation, Growth & Excellence",
+    "contact": {
+      "address": "Katchehry Road, Layyah, Punjab, Pakistan",
+      "email": "info@ul.edu.pk",
+      "phone": "+920606920247",
+      "admissionsOffice": "Students should contact the Admissions Office via the official portal for information not covered in the knowledge base."
     }
-  ],
-  "departments": [
-    {
-      "name": "Department of Computer Science",
-      "location": "Block C, 2nd Floor, Main Academic Building",
-      "extension": "142"
-    },
-    {
-      "name": "Department of Mathematics",
-      "location": "Block B, Ground Floor, Main Academic Building",
-      "extension": "118"
-    }
-  ],
-  "policies": {
-    "attendance": "Students must maintain at least 75% attendance in a course to be eligible for its final exam.",
-    "grading": "Mid-term exams carry 30% of the final grade, the final exam carries 50%, and the remaining 20% comes from assignments, quizzes, and class participation."
   },
-  "events": [
-    { "name": "AWS Student Builder Club Orientation", "date": "June 18, 2026" },
-    { "name": "Inter-Department Sports Gala", "date": "June 25, 2026" },
-    { "name": "Tech Talk: Intro to Cloud Computing", "date": "July 2, 2026" }
+  "metrics": {
+    "totalFaculties": 5,
+    "totalDepartments": 21,
+    "totalPrograms": 54,
+    "totalStudents": 5462
+  },
+  "leadership": {
+    "viceChancellor": {
+      "name": "Prof. Dr. Muhammad Zubair Abu Bakar",
+      "message": "It is indeed an honor for me to be the Vice Chancellor of the University of Layyah (UL), Layyah. It was my passion to lead an institute of higher learning engaged in enlightening the youth to have a well-lived life alongwith opportunities for entrepreneurship and employment. I will try to contribute all my efforts to make this University the best one by enabling students and faculty through modern teaching methods, practical education & collaborative research across the spectrum of challenges and opportunities prevailing over the globe. I welcome you to learn, explore and grow with the latest, updated and sustainability-oriented knowledge and skills to meet the competitive challenges of this modern era. I wish you a successful and promising educational journey with UL open to all genders and the students of all areas!"
+    }
+  },
+  "facilities": [
+    {
+      "name": "Medical Facility",
+      "description": "The University of Layyah provides on-campus medical services with qualified staff for routine and emergency care."
+    },
+    {
+      "name": "Library Facility",
+      "description": "The University of Layyah offers a modern library to support students and faculty in their academic pursuits."
+    },
+    {
+      "name": "Transport Facility",
+      "description": "The Transport Facility provides regular pick-and-drop services for students from various routes around the city."
+    },
+    {
+      "name": "Scholarship Facility",
+      "description": "The University of Layyah offers a range of scholarships to support talented and deserving students."
+    },
+    {
+      "name": "Faculty Hostel",
+      "description": "Accommodation services provided for university faculty."
+    },
+    {
+      "name": "Quality Enhancement Cell",
+      "description": "Internal department focused on maintaining academic and administrative standards."
+    },
+    {
+      "name": "Day Care Center",
+      "description": "On-campus facility for staff and student childcare, inaugurated by MPA Somia Atta."
+    }
   ],
-  "contact": {
-    "admissionsOffice": "For anything not covered here, direct students to the Admissions Office."
+  "newsAndAnnouncements": [
+    {
+      "headline": "MOU Between University of Layyah and UET",
+      "details": "University of Layyah and UET University of Engineering and Technology, Lahore Forge Historic Partnership: Boosting Academic and Technological (Digital) capabilities."
+    },
+    {
+      "headline": "Formally Inauguration of Day Care Center",
+      "details": "Today, the Day Care Centre at the University of Layyah was formally inaugurated in a graceful ceremony. The event was graced by MPA Somia Atta."
+    },
+    {
+      "headline": "5th UL Syndicate Meeting PHEC",
+      "details": "On 13 November 2025, the 5th meeting of the UL Syndicate was successfully convened at the Punjab Higher Education Commission (PHEC) in Lahore."
+    },
+    {
+      "headline": "Visit of Prof. Dr. Saeed Buzdar, VC Thal University Bhakkar",
+      "details": "Visit of Senior Academicians to the UL University of Layyah. The University of Layyah had the honor of hosting Prof. Dr. Saeed Buzdar, Vice Chancellor."
+    }
+  ],
+  "academicStructure": {
+    "faculties": [
+      {
+        "facultyName": "Faculty of Computing & Engineering",
+        "departments": [
+          {
+            "departmentName": "Department of Computer Engineering",
+            "programs": []
+          },
+          {
+            "departmentName": "Department of Computer Science",
+            "programs": [
+              {
+                "name": "BS Computer Science",
+                "duration": "4 years (8 semesters)",
+                "creditHours": "130–136",
+                "eligibility": {
+                  "minimumPercentage": 50,
+                  "requirements": [
+                    "F.Sc. (Pre-Engineering)",
+                    "F.Sc. (Pre-Medical) with additional Mathematics",
+                    "ICS (Mathematics, Statistics, Computer Science)",
+                    "General Group with Mathematics/Computer Science",
+                    "Equivalent qualifications certified by IBCC"
+                  ],
+                  "meritFormula": "30% Matric + 70% Intermediate"
+                },
+                "feeStructure": {
+                  "morningOpenMerit": {
+                    "semester1": 41800,
+                    "semester2": 38900,
+                    "semester3": 42090,
+                    "semester4": 45599,
+                    "semester5": 49459,
+                    "semester6": 53705,
+                    "semester7": 58375,
+                    "semester8": 63513
+                  }
+                }
+              },
+              {
+                "name": "BSCS - Artificial Intelligence"
+              }
+            ]
+          },
+          {
+            "departmentName": "Department of Information Technology",
+            "programs": [
+              {
+                "name": "BSCS - Information Technology",
+                "duration": "4 years (8 semesters)",
+                "creditHours": "130-136",
+                "eligibility": {
+                  "minimumPercentage": 50,
+                  "requirements": [
+                    "Intermediate (F.A / F.Sc / ICS / I.Com) or equivalent qualification",
+                    "Eligibility matching HEC criteria for computing disciplines"
+                  ],
+                  "meritFormula": "30% Matric + 70% Intermediate"
+                },
+                "feeStructure": {
+                  "morningOpenMerit": {
+                    "semester1": 41800,
+                    "semester2": 38900,
+                    "semester3": 42090,
+                    "semester4": 45599,
+                    "semester5": 49459,
+                    "semester6": 53705,
+                    "semester7": 58375,
+                    "semester8": 63513
+                  }
+                }
+              },
+              {
+                "name": "BSCS - Data Science"
+              }
+            ]
+          }
+        ],
+        "specialPrograms": [
+          {
+            "programName": "E-Rozgaar Program",
+            "modules": [
+              "Freelancing & Soft Skills",
+              "SEO & Digital Marketing",
+              "Graphic Design",
+              "YouTube Automation"
+            ]
+          }
+        ]
+      },
+      {
+        "facultyName": "Faculty of Veterinary and Animal Sciences",
+        "departments": [
+          {
+            "departmentName": "Department of Biosciences",
+            "programs": []
+          },
+          {
+            "departmentName": "Department of Clinical Sciences",
+            "programs": [
+              {
+                "name": "Livestock Assistant Diploma"
+              }
+            ]
+          },
+          {
+            "departmentName": "Department of Livestock and Poultry Sciences",
+            "programs": [
+              {
+                "name": "BS Poultry Sciences"
+              },
+              {
+                "name": "BS Dairy Technology"
+              }
+            ]
+          },
+          {
+            "departmentName": "Department of Pathobiology",
+            "programs": [
+              {
+                "name": "BS Microbiology"
+              },
+              {
+                "name": "POST-ADP (MICROBIOLOGY)"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "facultyName": "Faculty of Agricultural Sciences and Technology",
+        "departments": [
+          {
+            "departmentName": "Faculty of Agricultural Sciences and Technology (General)",
+            "programs": [
+              {
+                "name": "B.Sc. (Hons) Agriculture"
+              }
+            ]
+          },
+          {
+            "departmentName": "Department of Plant Production & Biotechnology",
+            "programs": [
+              {
+                "name": "BS Biotechnology"
+              }
+            ]
+          },
+          {
+            "departmentName": "Department of Horticulture & Plant Pathology",
+            "programs": [
+              {
+                "name": "M.Sc. (Hons) Agriculture (Horticulture)"
+              }
+            ]
+          },
+          {
+            "departmentName": "Department of Entomology & Food Science",
+            "programs": [
+              {
+                "name": "BS Food Science & Technology"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "facultyName": "Faculty of Management, Humanities & Social Sciences",
+        "departments": [
+          {
+            "departmentName": "Department of Behavioral Sciences",
+            "programs": [
+              { "name": "BS Education" },
+              { "name": "BS Applied Psychology" },
+              { "name": "BS Sociology" },
+              { "name": "BS Sports Science" },
+              { "name": "B.Ed (1.5)" },
+              { "name": "B.Ed (Hons)" },
+              { "name": "POST-ADP (PSYCHOLOGY)" },
+              { "name": "POST-ADP (SPORTS SCIENCE)" },
+              { "name": "POST-ADP (EDUCATION)" },
+              { "name": "POST-ADP (SOCIOLOGY)" }
+            ]
+          },
+          {
+            "departmentName": "Department of Islamic Studies and Languages",
+            "programs": [
+              { "name": "BS English" },
+              { "name": "BS Islamic Studies" },
+              { "name": "BS Urdu" },
+              { "name": "POST-ADP (ENGLISH)" },
+              { "name": "POST-ADP (ISLAMIC STUDIES)" },
+              { "name": "POST-ADP (URDU)" }
+            ]
+          },
+          {
+            "departmentName": "Department of Economics & Business Administration",
+            "programs": [
+              { "name": "BS International Relations" },
+              {
+                "name": "BBA",
+                "duration": "4 years (8 semesters)",
+                "creditHours": "126-132",
+                "eligibility": {
+                  "minimumPercentage": 45,
+                  "requirements": [
+                    "F.A / F.Sc / I.Com or equivalent qualification"
+                  ],
+                  "meritFormula": "30% Matric + 70% Intermediate"
+                },
+                "feeStructure": {
+                  "morningOpenMerit": {
+                    "semester1": 35800,
+                    "semester2": 32300,
+                    "semester3": 34830,
+                    "semester4": 37613,
+                    "semester5": 40674,
+                    "semester6": 44042,
+                    "semester7": 47746,
+                    "semester8": 51819
+                  },
+                  "afternoonOpenMerit": {
+                    "semester2": 42200
+                  }
+                }
+              },
+              { "name": "BS Economics" },
+              { "name": "BS Public Admin. & Governance" },
+              { "name": "POST-ADP (INTERNATIONAL RELATIONS)" },
+              { "name": "POST-ADP (PUBLIC ADMINISTRATION)" },
+              { "name": "POST-ADP (ECONOMICS)" },
+              { "name": "POST-ADP (BBA)" }
+            ]
+          }
+        ]
+      },
+      {
+        "facultyName": "Faculty of Natural Sciences",
+        "departments": [
+          {
+            "departmentName": "Department of Chemistry",
+            "programs": [
+              { "name": "BS Chemistry" },
+              { "name": "BS Environmental Sciences" },
+              { "name": "POST-ADP (ENVIRONMENTAL SCIENCE)" },
+              { "name": "POST-ADP (CHEMISTRY)" }
+            ]
+          },
+          {
+            "departmentName": "Department of Mathematics",
+            "programs": [
+              {
+                "name": "BS Mathematics",
+                "duration": "4 years (8 semesters)",
+                "creditHours": "124-136",
+                "eligibility": {
+                  "minimumPercentage": 45,
+                  "requirements": [
+                    "F.Sc (Pre-Engineering) / ICS / General Science with Mathematics",
+                    "An equivalent qualification with Mathematics as a major subject"
+                  ],
+                  "meritFormula": "30% Matric + 70% Intermediate"
+                },
+                "feeStructure": {
+                  "morningPrograms": {
+                    "semester1": 35800,
+                    "semester2": 32300,
+                    "semester3": 34830,
+                    "semester4": 37613,
+                    "semester5": 40674,
+                    "semester6": 44042,
+                    "semester7": 47746,
+                    "semester8": 51819
+                  }
+                }
+              },
+              { "name": "POST-ADP (MATHEMATICS)" }
+            ]
+          },
+          {
+            "departmentName": "Department of Physics",
+            "programs": [
+              { "name": "BS Physics" }
+            ]
+          },
+          {
+            "departmentName": "Department of Zoology",
+            "programs": [
+              { "name": "BS Zoology" },
+              { "name": "POST-ADP (ZOOLOGY)" }
+            ]
+          },
+          {
+            "departmentName": "Department of Botany",
+            "programs": [
+              { "name": "BS Botany" },
+              { "name": "POST-ADP (BOTANY)" }
+            ]
+          },
+          {
+            "departmentName": "Department of Biotechnology",
+            "programs": [
+              { "name": "BS Biotechnology" },
+              { "name": "POST-ADP (BIOTECHNOLOGY)" }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "generalPolicies": {
+    "eligibility": "The University of Layyah retains authority to alter minimum qualification metrics in compliance with HEC directives.",
+    "admissions": "Admission process execution requires adherence to official schedules and registration on the online portal.",
+    "ageLimit": 26,
+    "applicationFee": 700
+  },
+  "assistantGuidelines": {
+    "unknownInformation": "Direct users to the Admissions Office or the online verification portal if queries go outside the explicitly provided parameters.",
+    "fees": "Inherent variations exist across sessions; declare the possibility of changes to fee schedules before confirmation.",
+    "deadlines": "Dates are structurally dynamic; immediate verification from ul.edu.pk/admissions is mandatory."
   }
 }

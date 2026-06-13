@@ -17,8 +17,8 @@ export default function RootLayout({
       <body>
         <ThemeProvider
           attribute="class"
-          defaultTheme="system"
-          enableSystem
+					defaultTheme="sun"
+          themes={["sun", "moon", "star"]}
           disableTransitionOnChange
         >
           {children}
